@@ -25,6 +25,9 @@ const movieController = {
     res.render("movieAdd");
   },
   async createOne(req, res) {
+    const posterFilePath = req.file
+      ? `/poster/${req.file.filename}`
+      : "/poster/default.jpg";
     const { title, year, duration, director, poster, genre, rate, synopsis } =
       req.body;
     const newMovie = {
@@ -33,7 +36,7 @@ const movieController = {
       year,
       duration,
       director,
-      poster,
+      poster: posterFilePath,
       genre: genre.split(", "),
       rate,
       synopsis,
@@ -67,10 +70,14 @@ const movieController = {
   },
   async deleteOne(req, res) {
     const { id } = req.params;
+    const { poster } = this.movies.find((movie) => movie.id == id);
     const filteredMovies = this.movies.filter((movie) => {
       return movie.id !== id;
     });
     await dataSource.save(filteredMovies);
+    if (poster !== "/poster/default.png") {
+      await dataSource.removeFile();
+    }
     res.redirect("/movies");
   },
 };

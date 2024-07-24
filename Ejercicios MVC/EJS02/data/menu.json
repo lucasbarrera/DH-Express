@@ -1,5 +1,4 @@
-{
-    "menu":[
+[
         {
             "id":"1",
             "nombre":"Carpaccio fresco",
@@ -25,4 +24,3 @@
             "precio":"U$S 37.50"
         }
     ]
-}
